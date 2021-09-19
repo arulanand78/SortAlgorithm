@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortAlgorithm", "SortAlgorithm\SortAlgorithm.csproj", "{94D4BA23-E30A-4E4E-B523-E87A8C335E84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SortAlgorithm", "SortAlgorithm\SortAlgorithm.csproj", "{94D4BA23-E30A-4E4E-B523-E87A8C335E84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{4DFD34BA-9E28-45D8-A348-91A656F615F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{4DFD34BA-9E28-45D8-A348-91A656F615F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{988A8D8C-12A8-4F93-8C8C-4214332D6DF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4DFD34BA-9E28-45D8-A348-91A656F615F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DFD34BA-9E28-45D8-A348-91A656F615F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DFD34BA-9E28-45D8-A348-91A656F615F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988A8D8C-12A8-4F93-8C8C-4214332D6DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988A8D8C-12A8-4F93-8C8C-4214332D6DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988A8D8C-12A8-4F93-8C8C-4214332D6DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988A8D8C-12A8-4F93-8C8C-4214332D6DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
