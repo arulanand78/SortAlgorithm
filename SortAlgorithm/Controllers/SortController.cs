@@ -1,8 +1,11 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Service;
+using SortAlgorithm.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +20,18 @@ namespace SortAlgorithm.Controllers
         private readonly ILogger<SortController> _logger;
         private readonly IServiceProvider _serviceProvider;
         private ISortAlgorithm _sortAlgorithm;
+        private FileOperation _fileIO;
+        private IHostEnvironment _hostEnvironment;
+        private readonly AppSettings _appSettings;
 
-        public SortController(ILogger<SortController> logger, IServiceProvider serviceProvider)
+        public SortController(ILogger<SortController> logger, IServiceProvider serviceProvider, FileOperation fileIO, IHostEnvironment hostEnvironment, 
+            IOptions<AppSettings> appSettings)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
+            _fileIO = fileIO;
+            _hostEnvironment = hostEnvironment;
+            _appSettings = appSettings.Value;
         }
 
         [HttpGet]
@@ -47,7 +57,17 @@ namespace SortAlgorithm.Controllers
             }
 
 
-            int[] sortedIntegers = await _sortAlgorithm.DoSort(unsortedIntegers);
+            int[] sortedIntegers = await _sortAlgorithm.DoSort(unsortedIntegers.ToArray());
+            SortResultSummary result = new SortResultSummary 
+                                    { 
+                                        FileName = _appSettings.ResultFileName,
+                                        FilePath = _hostEnvironment.ContentRootPath + @"\AppData",
+                                        OutputData = sortedIntegers,
+                                        InputData = unsortedIntegers,
+                                        SortAlgorithm = (SortType.Algorithm) Enum.Parse(typeof(SortType.Algorithm), sortAlgorithm)
+                                    };
+            _fileIO.Write(result);
+
             return CreatedAtAction(nameof(SortInput), sortedIntegers);
         }
     }

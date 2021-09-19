@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Service;
+using SortAlgorithm.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace SortAlgorithm
             });
 
             services.AddTransient<BubbleSortAlgorithm>();
+            services.AddTransient<FileOperation>();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +64,7 @@ namespace SortAlgorithm
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
