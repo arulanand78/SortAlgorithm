@@ -37,7 +37,16 @@ namespace SortAlgorithm.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            return Content("");
+            string result;
+            var isFileRead = _fileIO.Read(_appSettings.ResultFileName, _hostEnvironment.ContentRootPath + @"\AppData", out result);
+            if (isFileRead)
+            {
+                return Content(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
         }
 
         [HttpPost]
@@ -66,9 +75,16 @@ namespace SortAlgorithm.Controllers
                                         InputData = unsortedIntegers,
                                         SortAlgorithm = (SortType.Algorithm) Enum.Parse(typeof(SortType.Algorithm), sortAlgorithm)
                                     };
-            _fileIO.Write(result);
+            bool isFileCreated = _fileIO.Write(result);
 
-            return CreatedAtAction(nameof(SortInput), sortedIntegers);
+            if (isFileCreated)
+            {
+                return CreatedAtAction(nameof(SortInput), sortedIntegers);
+            }
+            else
+            {
+                return BadRequest("An error occured, File was not created successfully");
+            }
         }
     }
 }
