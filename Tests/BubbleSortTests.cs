@@ -23,7 +23,7 @@ namespace Tests
 
             var expectedOutput = new int[] { 3, 7, 10, 13, 19, 24, 31, 49, 54, 56, 78, 99 };
 
-            sortedIntegers.Should().BeEquivalentTo(expectedOutput);
+            sortedIntegers.Should().Equal(expectedOutput);
         }
     }
 }
