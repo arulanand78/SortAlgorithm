@@ -35,7 +35,8 @@ namespace SortAlgorithm
             });
 
             services.AddTransient<BubbleSortAlgorithm>();
-            services.AddTransient<FileOperation>();
+            services.AddTransient<IFileOperation, FileOperation>();
+            services.AddTransient<IAlgorithmFactory, AlgorithmFactory>();
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
         }
 

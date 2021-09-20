@@ -19,19 +19,20 @@ namespace SortAlgorithm.Controllers
     {
         private readonly ILogger<SortController> _logger;
         private readonly IServiceProvider _serviceProvider;
-        private ISortAlgorithm _sortAlgorithm;
-        private FileOperation _fileIO;
+        private IFileOperation _fileIO;
         private IHostEnvironment _hostEnvironment;
         private readonly AppSettings _appSettings;
+        private readonly IAlgorithmFactory _algorithmFactory;
 
-        public SortController(ILogger<SortController> logger, IServiceProvider serviceProvider, FileOperation fileIO, IHostEnvironment hostEnvironment, 
-            IOptions<AppSettings> appSettings)
+        public SortController(ILogger<SortController> logger, IServiceProvider serviceProvider, IFileOperation fileIO, IHostEnvironment hostEnvironment, 
+            IOptions<AppSettings> appSettings, IAlgorithmFactory algorithmFactory)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
             _fileIO = fileIO;
             _hostEnvironment = hostEnvironment;
             _appSettings = appSettings.Value;
+            _algorithmFactory = algorithmFactory;
         }
 
         [HttpGet]
@@ -50,40 +51,37 @@ namespace SortAlgorithm.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SortInput([FromBody] int[] unsortedIntegers, string sortAlgorithm)
+        public async Task<ActionResult> SortInput([FromBody] int[] unsortedIntegers, string algorithmType)
         {
-            if (unsortedIntegers.Length == 0 || sortAlgorithm.Length <= 0)
+            if (unsortedIntegers.Length == 0 || algorithmType.Length <= 0)
                 return BadRequest("Invalid Input, Please check the input passed");
 
-            
-            if (sortAlgorithm == SortType.Algorithm.Bubblesort.ToString())
+            var _sortAlgorithm = _algorithmFactory.GetSortAlgorithm(algorithmType);
+            if (_sortAlgorithm != null)
             {
-                _sortAlgorithm = _serviceProvider.GetService<BubbleSortAlgorithm>();
+                var sortedIntegers = await _sortAlgorithm.DoSort(unsortedIntegers.ToArray());
+                SortResultSummary result = new SortResultSummary
+                {
+                    FileName = _appSettings.ResultFileName,
+                    FilePath = _hostEnvironment.ContentRootPath + @"\AppData",
+                    OutputData = sortedIntegers,
+                    InputData = unsortedIntegers,
+                    SortAlgorithm = (SortType.Algorithm)Enum.Parse(typeof(SortType.Algorithm), algorithmType)
+                };
+
+                bool isFileCreated = _fileIO.Write(result);
+                if (isFileCreated)
+                {
+                    return CreatedAtAction(nameof(SortInput), sortedIntegers);
+                }
+                else
+                {
+                    return BadRequest("An error occured, File was not created successfully");
+                }
             }
             else
             {
-                return BadRequest("Invalid Sort Algorithm, Enter either Bubblesort or ");
-            }
-
-
-            int[] sortedIntegers = await _sortAlgorithm.DoSort(unsortedIntegers.ToArray());
-            SortResultSummary result = new SortResultSummary 
-                                    { 
-                                        FileName = _appSettings.ResultFileName,
-                                        FilePath = _hostEnvironment.ContentRootPath + @"\AppData",
-                                        OutputData = sortedIntegers,
-                                        InputData = unsortedIntegers,
-                                        SortAlgorithm = (SortType.Algorithm) Enum.Parse(typeof(SortType.Algorithm), sortAlgorithm)
-                                    };
-            bool isFileCreated = _fileIO.Write(result);
-
-            if (isFileCreated)
-            {
-                return CreatedAtAction(nameof(SortInput), sortedIntegers);
-            }
-            else
-            {
-                return BadRequest("An error occured, File was not created successfully");
+                return BadRequest("Entered Algorithm Type is not supported");
             }
         }
     }

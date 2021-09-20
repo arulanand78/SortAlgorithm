@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Service
 {
-    public class FileOperation
+    public class FileOperation : IFileOperation
     {
         public bool Write(SortResultSummary resultSummary)
         {

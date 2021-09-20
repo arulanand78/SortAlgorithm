@@ -6,7 +6,7 @@ namespace Domain
     {
         public enum Algorithm
         {
-            Bubblesort = 0,
+            Bubblesort,
             Mergesort 
         }
     }
