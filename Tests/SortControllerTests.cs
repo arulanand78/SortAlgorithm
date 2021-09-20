@@ -61,7 +61,7 @@ namespace Tests
             var sortAlgorithm = Substitute.For<ISortAlgorithm>();
 
             sortAlgorithm.DoSort(unsortedIntegers).Returns(new int[] { });
-            _algorithmFactory.GetSortAlgorithm(Arg.Any<string>()).Returns(new BubbleSortAlgorithm());
+            _algorithmFactory.GetSortAlgorithm(Arg.Any<string>()).Returns(sortAlgorithm);
             _fileIO.Write(Arg.Any<SortResultSummary>()).Returns(false);
 
             var controllerUnderTest = new SortController(_logger, _serviceProvider, _fileIO, _hostEnvironment, _appSettings, _algorithmFactory);
@@ -73,6 +73,25 @@ namespace Tests
             response.Should().BeOfType(typeof(BadRequestObjectResult));
             response.StatusCode.Should().Be(400);
             response.Value.Should().Be("An error occured, File was not created successfully");
+        }
+
+        [TestMethod]
+        public void GivenAllRequiredInputIsReceived_WhenSortTypeAlgorithmIsInvalid_ThenRaiseCorrespondingError()
+        {
+            //Arrange
+            var unsortedIntegers = new int[] { 10, 5, 54, 24, 19, 45, 99, 78, 65, 11, 41, 87 };
+            _algorithmFactory.GetSortAlgorithm(Arg.Any<string>()).Returns(i => null);
+            _fileIO.Write(Arg.Any<SortResultSummary>()).Returns(false);
+
+            var controllerUnderTest = new SortController(_logger, _serviceProvider, _fileIO, _hostEnvironment, _appSettings, _algorithmFactory);
+
+            //Act
+            var response = controllerUnderTest.SortInput(unsortedIntegers, "SomeSortType").GetAwaiter().GetResult() as ObjectResult;
+
+            //Assert
+            response.Should().BeOfType(typeof(BadRequestObjectResult));
+            response.StatusCode.Should().Be(400);
+            response.Value.Should().Be("Entered algorithm type is not supported, Please enter `Bubblesort` or `Mergesort`");
         }
     }
 }

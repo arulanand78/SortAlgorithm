@@ -11,8 +11,10 @@ namespace Service
 
         public Task<int[]> DoSort(int[] unsortedIntegers)
         {
-            for (int i = 0; i < unsortedIntegers.Length; i++)
+            var swapped = true;
+            do
             {
+                swapped = false;
                 for (int j = 0; j < unsortedIntegers.Length - 1; j++)
                 {
                     var currInt = unsortedIntegers[j];
@@ -22,9 +24,10 @@ namespace Service
                     {
                         unsortedIntegers[j + 1] = currInt;
                         unsortedIntegers[j] = nextInt;
+                        swapped = true;
                     }
                 }
-            } 
+            } while (swapped);
 
             return Task.FromResult(unsortedIntegers);
         }

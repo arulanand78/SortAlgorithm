@@ -81,7 +81,7 @@ namespace SortAlgorithm.Controllers
             }
             else
             {
-                return BadRequest("Entered Algorithm Type is not supported");
+                return BadRequest("Entered algorithm type is not supported, Please enter `Bubblesort` or `Mergesort`");
             }
         }
     }
