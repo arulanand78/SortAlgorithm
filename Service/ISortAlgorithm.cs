@@ -7,6 +7,6 @@ namespace Service
 {
     public interface ISortAlgorithm
     {
-        public Task<int[]> DoSort(int[] unsortedIntegers);
+        public int[] DoSort(int[] unsortedIntegers);
     }
 }

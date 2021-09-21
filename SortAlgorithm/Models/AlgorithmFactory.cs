@@ -20,6 +20,10 @@ namespace SortAlgorithm.Models
             {
                 return _serviceProvider.GetService<BubbleSortAlgorithm>();
             }
+            else if (algorithmType == SortType.Algorithm.Mergesort.ToString())
+            {
+                return _serviceProvider.GetService<MergeSortAlgorithm>();
+            }
             else
             {
                 return null;

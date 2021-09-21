@@ -9,7 +9,7 @@ namespace Service
 
         }
 
-        public Task<int[]> DoSort(int[] unsortedIntegers)
+        public int[] DoSort(int[] unsortedIntegers)
         {
             var swapped = true;
             do
@@ -29,7 +29,7 @@ namespace Service
                 }
             } while (swapped);
 
-            return Task.FromResult(unsortedIntegers);
+            return unsortedIntegers;
         }
     }
 }

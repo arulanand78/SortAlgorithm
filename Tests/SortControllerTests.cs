@@ -45,7 +45,7 @@ namespace Tests
             var unsortedIntegers = new int[] { 10, 5, 54, 24, 19, 45, 99, 78, 65, 11, 41, 87 };
 
             //Act
-            var response = controllerUnderTest.SortInput(unsortedIntegers, "").GetAwaiter().GetResult() as ObjectResult;
+            var response = controllerUnderTest.SortInput(unsortedIntegers, "") as ObjectResult;
 
             //Assert
             response.Should().BeOfType(typeof(BadRequestObjectResult));
@@ -67,7 +67,7 @@ namespace Tests
             var controllerUnderTest = new SortController(_logger, _serviceProvider, _fileIO, _hostEnvironment, _appSettings, _algorithmFactory);
 
             //Act
-            var response = controllerUnderTest.SortInput(unsortedIntegers, "Bubblesort").GetAwaiter().GetResult() as ObjectResult;
+            var response = controllerUnderTest.SortInput(unsortedIntegers, "Bubblesort") as ObjectResult;
 
             //Assert
             response.Should().BeOfType(typeof(BadRequestObjectResult));
@@ -86,7 +86,7 @@ namespace Tests
             var controllerUnderTest = new SortController(_logger, _serviceProvider, _fileIO, _hostEnvironment, _appSettings, _algorithmFactory);
 
             //Act
-            var response = controllerUnderTest.SortInput(unsortedIntegers, "SomeSortType").GetAwaiter().GetResult() as ObjectResult;
+            var response = controllerUnderTest.SortInput(unsortedIntegers, "SomeSortType") as ObjectResult;
 
             //Assert
             response.Should().BeOfType(typeof(BadRequestObjectResult));

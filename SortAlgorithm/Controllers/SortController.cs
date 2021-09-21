@@ -51,7 +51,7 @@ namespace SortAlgorithm.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SortInput([FromBody] int[] unsortedIntegers, string algorithmType)
+        public  ActionResult SortInput([FromBody] int[] unsortedIntegers, string algorithmType)
         {
             if (unsortedIntegers.Length == 0 || algorithmType.Length <= 0)
                 return BadRequest("Invalid Input, Please check the input passed");
@@ -59,7 +59,7 @@ namespace SortAlgorithm.Controllers
             var _sortAlgorithm = _algorithmFactory.GetSortAlgorithm(algorithmType);
             if (_sortAlgorithm != null)
             {
-                var sortedIntegers = await _sortAlgorithm.DoSort(unsortedIntegers.ToArray());
+                var sortedIntegers =  _sortAlgorithm.DoSort(unsortedIntegers.ToArray());
                 SortResultSummary result = new SortResultSummary
                 {
                     FileName = _appSettings.ResultFileName,
